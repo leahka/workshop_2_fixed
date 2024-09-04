@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>new_002</title>
+	<meta charset="utf-8">
+	<!-- Compiled w/ P5LIVE, http://github.com/ffd8/p5live -->
+	<style type="text/css">
+		body{
+			margin:0;
+			overflow:hidden;
+		}
+		canvas{
+			position:fixed;
+			top:0;
+			left:0;
+			z-index:-1;
+			width:100vw;
+			height:100vh;
+			margin:0;
+		}
+	</style>
+	<script type="text/javascript">
+		// eco-mode = only render if window focused
+		window.onblur = function () {
+			noLoop();
+		};
+		window.onfocus = function () {
+			loop();
+		};
+	</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/processing/p5.js-sound/lib/p5.sound.min.js"></script>
+</head>
+<body style="background: rgb(7, 50, 50);">
+
+<script type="text/javascript">
+//new_002
+
+/* CUSTOM FUNCTIONS FOR P5LIVE */
+// keep fullscreen if window resized
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+}
+
+// custom ease function
+function ease(iVal, oVal, eVal){
+	return oVal += (iVal - oVal) * eVal;
+}
+
+// processing compatibility
+function println(msg){
+	print(msg);
+}
+
+
+// Bouncin' dogs sketch
+// ART 4990 Workshop 2 / p5js x github website builder
+// Code sources used in this sketch: Aubrey Pohl, Daniel Shiffman, Sophia Timmons.
+// In this sketch, you will learn how to add images to a canvas, text, and how to animate without frameCount.
+// The full Workshop 2 demo includes how to publish your sketch (or anything) as a website via Github
+// AP will publish a full recorded demo at a later date.
+
+// Declare x and y variables to be used later to track the position and dimension of images.
+let x;
+let y;
+
+// Declare variables for the speed of a moving x and y value.
+let xspeed;
+let yspeed;
+
+// Build an empty array called 'img' to be filled with images later.
+let img = [];
+
+// Declare variable that will be used to cycle through an index of images.
+// In code, everything starts at 0, so 0 becomes #1. For example. In this list '0,1,2', 0 is the first interger, so the list has 3 items.
+let index = 0;
+
+// This function lets us load files. Images, data, 3D files, etc.
+function preload() {
+// Here we are loading images from outside of the sketch.
+// The images are being added to the empty 'img[]' starting at 0 (first image in the array).
+	img[0] = loadImage('https://i.imgur.com/nHVVLLe.png');
+	img[1] = loadImage('https://i.imgur.com/IvB1sfF.png');
+	img[2] = loadImage('https://i.imgur.com/kKPSkrZ.png');
+
+}
+
+// Set up is where we initate all the foundational pieces of our sketch. Canvas size, image modes, text alignment, etc.
+function setup() {
+	createCanvas(windowWidth, windowHeight); //canvas size.
+	x = random(width); //random width for start of x.
+	y = random(height); //random height for start of y.
+	xspeed = 3; //declaring speed of x.
+	yspeed = 3; //declaring speed of y.
+
+// LOOP! Sophia found a solution for the broken code. Ask her where!
+// We will cover loops in the future, but they are a great way to make your code efficient.
+// Here the loop is applying an image resize function to all of the images in our 'img[]' array.
+// the 'img.length' is not speaking to the length of an image, but the length of the array.
+	for(i = 0; i < img.length; i++) {
+		img[i].resize(300, 0);
+	}
+
+// Initiating text formatting, fill color for text and objects, stroke or no stroke, etc.
+	textAlign(CENTER, CENTER);
+	textSize(width / 10);
+	fill(100,34,68);
+	// noFill();
+	// stroke(255);
+
+
+}
+
+// Setup runs once to initiate the sketch, draw keeps looping to keep things updated, moving, changing.
+function draw() {
+	background(7,50,50); //background value of 0 (black), and an opacity value of 3 (out of 255).
+
+	text('Cats', width / 2, height / 2); //putting text on the canvas.
+
+	image(img[index], x, y); //placing our image on the canvas. Index grabs an image from our 'img[]' array.
+
+	x = x + xspeed; //x = whatever x is at the start, + whatever we told xspeed to be, constantly updated in draw.
+	y = y + yspeed; //y = whatever y is at the start, + whatever we told yspeed to be, constantly updated in draw.
+
+// Here we are creating the 'dvd bounce' effect. 
+// If Statements are how we add conditions to our sketch. If this happens, then this happens, etc.
+// We are setting the parameters of our moving objects so that they stay within the bounds of the sketch.
+// Plugging 'index' in to our if statements allow us to cycle through images in our array.
+// We will cover If Statements in detail at a later date.
+// The '%' used in the 'index = (index + 1) % img.length' helps us cycle back to the beginning of our array.
+	if(x + img[index].width >= width) {
+		xspeed = -xspeed;
+		x = width - img[index].width;
+		index = (index + 1) % img.length;
+	} else if(x <= 0) {
+		xspeed = -xspeed;
+		x = 0;
+		index = (index + 1) % img.length;
+	}
+
+	if(y + img[index].height >= height) {
+		yspeed = -yspeed;
+		y = height - img[index].height;
+		index = (index + 1) % img.length;
+	} else if(y <= 0) {
+		yspeed = -yspeed;
+		y = 0;
+		index = (index + 1) % img.length;
+	}
+
+}
+</script>
+
+</body>
+</html>
